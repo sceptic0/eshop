@@ -1,0 +1,63 @@
+{% extends 'layout_frontend.html.twig' %}
+
+{% block title %}Hello RegisterController!{% endblock %}
+
+{% block content %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <div class="container">
+        <h4>Register</h4>
+        {{ form_start(form) }}
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"
+        >
+        <div class="card-body col-md-12">
+            <div class="form-group">
+                <label for="name">{{ form_label(form.firstName)}}</label>
+                {{ form_widget(form.firstName) }}
+            </div>
+            {% if form_errors(form.firstName)  %}
+                <div class="alert alert-warning">
+                    {{ form_errors(form.firstName) }}
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="name">{{ form_label(form.lastName)}}</label>
+                {{ form_widget(form.lastName) }}
+            </div>
+            {% if form_errors(form.lastName)  %}
+                <div class="alert alert-warning">
+                    {{ form_errors(form.lastName) }}
+                </div>
+            {% endif %}
+            <div class="form-group">
+                <label for="name">{{ form_label(form.email)}}</label>
+                {{ form_widget(form.email) }}
+            </div>
+            {% if form_errors(form.email)  %}
+                <div class="alert alert-warning">
+                    {{ form_errors(form.email) }}
+                </div>
+            {% endif %}
+            <div class="form-group">
+                {{ form_widget(form.password) }}
+            </div>
+            {% if form_errors(form.password)  %}
+                <div class="alert alert-warning">
+                    {{ form_errors(form.password) }}
+                </div>
+            {% endif %}
+            <div class="form-group">
+                {{ form_widget(form.submit) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+
+{% endblock %}

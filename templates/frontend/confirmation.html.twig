@@ -1,0 +1,24 @@
+{% extends 'layout_frontend.html.twig' %}
+
+{% block title %} Confirm registration{% endblock %}
+
+{% block content %}
+
+    {% for message in app.flashes('account_enabled') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('already_enabled') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('hash_mismatch') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endblock %}

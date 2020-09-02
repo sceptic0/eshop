@@ -1,0 +1,25 @@
+Hello: Welcome
+Login: Login
+Logout: Logout
+Language: Language
+store_not_found: Store was not found!
+account_enabled: Your account has been successfully enable. You can login now!
+hash_mismatch: Something went wrong with your confirmation process!
+enable_account: Please verify your account!
+already_enabled: Your account is already enabled!
+retry_send_email: You can request a new password at %time%
+password_reset: Reset password
+password_reset_email: Hi,
+  You requested a new password. Click the link below to set a new password.
+profile: Profile
+change_password: Change password
+about: About
+phone: Phone
+full_name: Full name
+current_password: The current password is not a valid one!
+password_changed_successfully: Your password was changed successfully!
+activation_email: An activation email was sent to your email address. Please check!
+products: Products
+browse: Browse
+price: Price
+created_at: Created at

@@ -1,0 +1,25 @@
+Hello: Salut
+Login: Logheza-te in cont
+Logout: Delogheaza-te
+Language: Limba
+store_not_found: Magazinul nu a fost gasit!
+account_enabled: Contul dumneavoastra a fost activat cu success. Va puteti loga!
+hash_mismatch: Ceva s-a intamplat in procesul dumneavoastra de autentificare! Va vom contacta in cel mai scurt timp.
+enable_account: Confirmati contul
+already_enabled: Contul dumneavoastra este deja activat!
+retry_send_email: Puteti cere o noua resetare de parola la %time%
+password_reset: Resetare parola
+password_reset_email: Salut,
+  Ai solicitat resetarea parolei. Click pe link-ul urmator pentru a seta o noua parola
+profile: Profil
+change_password: Schimbare parola
+about: Despre
+phone: Telefon
+full_name: Nume&Prenume
+current_password: Parola curenta nu este una valida!
+password_changed_successfully: Parola dumneavoastra a fost schimbata cu succes!
+activation_email: Un email de activare a contului a fost trimis catre adresa dumneavoastra de email!
+products: Produse
+browse: Vezi produs
+price: Pret
+created_at: Creat la

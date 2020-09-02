@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+        <title>{% block title %}Starter 4.4 | {% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+</head>
+<body class="{% block theme %}{% endblock %}">
+{% block body %}{% endblock %}
+{% block javascripts %}{% endblock %}
+{% block page_javascripts %}{% endblock %}
+</body>
+</html>

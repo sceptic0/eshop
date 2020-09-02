@@ -1,0 +1,50 @@
+<!-- begin:: Header -->
+<div id="kt_header" class="kt-header kt-grid__item kt-header--fixed " data-ktheader-minimize="on" >
+    <div class="kt-container  kt-container--fluid ">
+        <!-- begin:: Brand -->
+        <div class="kt-header__brand " id="kt_header_brand">
+            <div class="kt-header__brand-logo">
+                <a href="{{ path('dashboard_index') }}">
+                    <img alt="Logo" src="{{ asset('assets/dashboard/media/logos/logo-11.png') }}"/>	
+                </a>		
+            </div>
+        </div>
+        <!-- end:: Brand -->		
+        <!-- begin:: Header Topbar -->
+        <div class="kt-header__topbar">
+            <!--begin: User bar -->
+            <div class="kt-header__topbar-item kt-header__topbar-item--user">
+                <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">
+                    <span class="kt-header__topbar-username kt-visible-desktop">{{ app.user.email }}</span>
+                    <img alt="Pic" src="{{ asset('assets/dashboard/media/users/default.jpg') }}"/>
+                    <span class="kt-header__topbar-icon kt-bg-brand kt-hidden">
+                        <b>A</b>
+                    </span>
+                </div>
+                <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl">
+                    <!--begin: Head -->
+                    <div class="kt-user-card kt-user-card--skin-light kt-notification-item-padding-x">
+                        <div class="kt-user-card__avatar">
+                            <img class="kt-hidden-" alt="Pic" src="{{ asset('assets/dashboard/media/users/default.jpg') }}" />
+                        </div>
+                        <div class="kt-user-card__name">
+                            {{ app.user.email }}
+                        </div>
+                    </div>
+                    <!--end: Head -->
+                    <!--begin: Navigation -->
+                    <div class="kt-notification">
+                        <div class="kt-notification__custom kt-space-between">
+                            <a href="{{ path('dashboard_logout') }}" class="btn btn-label btn-label-brand btn-sm btn-bold">Sign Out</a>
+                            <a href="{{ path('dashboard_change_password') }}" class="btn btn-clean btn-sm btn-bold">Change password</a>
+                        </div>
+                    </div>
+                    <!--end: Navigation -->
+                </div>
+            </div>
+            <!--end: User bar -->
+        </div>
+        <!-- end:: Header Topbar -->
+    </div>
+</div>
+<!-- end:: Header -->

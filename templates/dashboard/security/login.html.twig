@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} Login{% endblock %}
+{% block theme 'kt-page-content-white kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--transparent kt-aside--enabled kt-aside--fixed kt-page--loading' %}
+
+    {% block stylesheets %}
+        <!--begin::Fonts -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Asap+Condensed:500" />
+        <!--end::Fonts -->
+        <!--begin::Page Custom Styles(used by this page) -->
+        <link href="{{ asset('assets/dashboard/css/demo11/pages/login/login-3.css') }}" rel="stylesheet" type="text/css" />
+        <!--end::Page Custom Styles -->
+        <!--begin::Global Theme Styles(used by all pages) -->
+        <link href="{{ asset('assets/dashboard/css/demo11/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+        <!--end::Global Theme Styles -->
+    {% endblock %}
+
+    {% block body %}
+        <!-- begin:: Page -->
+        <div class="kt-grid kt-grid--ver kt-grid--root">
+            <div class="kt-grid kt-grid--hor kt-grid--root  kt-login kt-login--v3 kt-login--signin" id="kt_login">
+                <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" style="background-image: url('{{ asset('assets/dashboard/media/bg/bg-3.jpg') }}');">
+                    <div class="kt-grid__item kt-grid__item--fluid kt-login__wrapper">
+                        <div class="kt-login__container">
+                            <div class="kt-login__logo">
+                                <a href="{{ path('dashboard_index') }}">
+                                    <img src="{{ asset('assets/dashboard/media/logos/logo-5.png') }}">
+                                </a>
+                            </div>
+                            <div class="kt-login__signin">
+                                <div class="kt-login__head">
+                                    <h3 class="kt-login__title">Sign In To Admin</h3>
+                                </div>
+                                {% if error %}
+                                    <div class="alert alert-danger">
+                                        <button class="close" data-close="alert"></button>
+                                        <span>{{ error.messageKey|trans(error.messageData, 'security') }}</span>
+                                    </div>
+                                {% endif %}
+                                <form class="kt-form" method="post">
+                                    <div class="input-group">
+                                        <input class="form-control" type="text" placeholder="Email" name="email" value="{{ last_username }}" autocomplete="off" required="required">
+                                    </div>
+                                    <div class="input-group">
+                                        <input class="form-control" type="password" placeholder="Password" name="password" autocomplete="off"  required="required">
+                                    </div>
+                                    <div class="row kt-login__extra">
+                                        <div class="col">
+                                            <label class="kt-checkbox">
+                                                <input type="checkbox" name="_remember_me"> Remember me
+                                                <span></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="kt-login__actions">
+                                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                                        <button id="kt_login_signin_submit" class="btn btn-brand btn-elevate kt-login__btn-primary">Sign In</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end:: Page -->
+    {% endblock %}
+

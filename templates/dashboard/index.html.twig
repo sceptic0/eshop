@@ -1,0 +1,65 @@
+{% extends 'layout_dashboard.html.twig' %}
+
+{% block title %}{{ parent() }} Dashboard{% endblock %}
+
+{% block content %}
+    <!-- begin:: Subheader -->
+    <div class="kt-subheader kt-grid__item" id="kt_subheader">
+        <div class="kt-container kt-container--fluid ">
+            <div class="kt-subheader__main">
+                <h3 class="kt-subheader__title">Dashboard</h3>
+                <span class="kt-subheader__separator kt-hidden"></span>
+                <div class="kt-subheader__breadcrumbs">
+                    <a href="{{ path('dashboard_index') }}" class="kt-subheader__breadcrumbs-home">
+                        <i class="flaticon-home-2"></i>
+                    </a>
+                    <span class="kt-subheader__breadcrumbs-separator"></span>
+                    <span class="kt-subheader__breadcrumbs-link kt-subheader__breadcrumbs-link--active">Control Panel</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end:: Subheader -->
+    <!-- begin:: Content -->
+    <div class="kt-container  kt-container--fluid kt-grid__item kt-grid__item--fluid">
+        {% include 'shared/dashboard/alerts.html.twig' %}
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__head kt-portlet__head--lg">
+                <div class="kt-portlet__head-label">
+                    <span class="kt-portlet__head-icon">
+                        <i class="kt-font-brand flaticon2-line-chart"></i>
+                    </span>
+                    <h3 class="kt-portlet__head-title">
+                        Home
+                    </h3>
+                </div>
+            </div>
+            <div class="kt-portlet__body">
+
+            </div>
+        </div>
+        {% for store in stores %}
+            <div class="card card-custom">
+                <div class="card-header">
+                    <div class="card-title">
+
+                    </div>
+                    <div class="card-toolbar">
+                        <a href="#" class="btn btn-sm btn-light-primary font-weight-bold">
+                            <i class="flaticon2-cube"></i>   Store {{ store.domain }}
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div data-scroll="true" data-height="50">
+                        You can manage the <strong>{{ store.domain }}</strong> clicking manage below
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <a href="{{ path('store_show', {hash: store.hash}) }}" class="btn btn-outline-secondary font-weight-bold">Manage</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <!-- end:: Content -->
+{% endblock %}

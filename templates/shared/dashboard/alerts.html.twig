@@ -1,0 +1,10 @@
+{% block flashes %}
+    {% for type in ['success', 'danger', 'warning'] %}
+        {% for flash in app.session.flashbag.get(type) %}
+            <div class="alert alert-{{ type }}" role="alert">
+                <button type="button" class="close" data-dismiss="alert"></button>
+                {{ flash|raw }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+{% endblock %}

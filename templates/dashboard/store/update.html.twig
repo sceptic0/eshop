@@ -1,0 +1,23 @@
+{% extends 'layout_dashboard.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h5>Create new store</h5>
+        {{ form_start(form) }}
+        <div class="card-body col-md-3">
+            <div class="form-group">
+                <label>{{ form_label(form.domain) }}</label>
+                {{ form_widget(form.domain,{'attr': {'class': 'form-control form-control-solid'}}) }}
+                {% if form_errors(form.domain) %}
+                    <div class="alert alert-danger">
+                        {{ form_errors(form.domain) }}
+                    </div>
+                {% endif %}
+            </div>
+            {{form_widget(form.submit, {'attr': {'class': 'btn btn-primary mr-2'}}) }}
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

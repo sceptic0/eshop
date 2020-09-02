@@ -1,0 +1,67 @@
+{% extends 'layout_frontend.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% for message in app.flashes('email_sent') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('activation_email') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        <h4>Login</h4>
+        <form class="form" method="POST">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <div class="card-body col-md-5">
+                <div class="form-group">
+                    <label>Email address:</label>
+                    <input type="email" class="form-control form-control-solid" name="email" placeholder="Enter email"/>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" class="form-control form-control-solid"/>
+                </div>
+            </div>
+            <div id="g-recaptcha" class="g-recaptcha" data-sitekey="6LesIcYZAAAAAK0MCMjDMoEYC5lwxwpJgQdZRPBr"></div>
+            {% for message in app.flashes('captcha_required') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% for message in app.flashes('captcha_invalid') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-primary mr-2">Login</button>
+            </div>
+        </form>
+        <div class="form-group">
+            <p><a href="{{ path('forgot_password') }}">Forgot password?</a></p>
+            <p>You can <strong><a href="{{ path("auth_register") }}">register</a></strong> an account if you don't have one!</p>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        var widget;
+        var onloadCallback = function() {
+            var elt = document.getElementById('g-recaptcha');
+            if (elt) {
+                widget = grecaptcha.render(elt, {
+                    'sitekey' : '6LesIcYZAAAAAK0MCMjDMoEYC5lwxwpJgQdZRPBr'
+                });
+            }
+        };
+    </script>
+    <script src='https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit' async defer></script>
+{% endblock %}
