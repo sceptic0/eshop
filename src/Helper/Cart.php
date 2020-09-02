@@ -4,6 +4,7 @@
 namespace App\Helper;
 
 
+use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -31,31 +32,45 @@ class Cart
         $this->setCart();
     }
 
+    /**
+     * Set cart in session
+     */
     public function setCart()
     {
         $this->cart = $this->session->get('cart');
     }
 
+    /**
+     * Get cart products from session
+     * @return Cart
+     */
     public function getCart()
     {
         return $this->cart;
     }
 
+    /**
+     * Function that adds product to session
+     * @param $product
+     */
     public function addToSession($product)
     {
         $session = $this->session;
 
         if ($session->has('cart')) {
             $products = (array)$session->get('cart');
-            array_push($products, $product->getId());
+            array_push($products, $product->getHash());
             $session->set('cart', $products);
         } else {
-            $products = array($product->getId());
+            $products = array($product->getHash());
             $session->set('cart', $products);
         }
     }
 
-
+    /**
+     * Function that removes product from session
+     * @param $product
+     */
     public function removeFromSession($product)
     {
         $session = $this->session;
@@ -70,22 +85,40 @@ class Cart
         }
     }
 
-
+    /**
+     * Calculate cart total
+     * @param $cartProducts
+     * @return float|int
+     */
     public function getCartTotal($cartProducts)
     {
-        $myCollectionIds = array_map(function ($obj) {
-            return ['id' => $obj->getProduct()->getId(), 'qty' => $obj->getQty()];
-        }, $cartProducts);
-        $products = $this->entityManager->getRepository(Product::class)->findWhereInArray(array_column($myCollectionIds,'id'));
+        $productsQty = array_count_values($cartProducts);
+        $products = $this->entityManager->getRepository(Product::class)->findWhereInArray(array_values($cartProducts));
         $total = 0;
         foreach ($products as $k => $product) {
-            foreach ($myCollectionIds as $collection) {
-                if ($collection['id'] === $product['id']) {
-                    $total += $collection['qty'] * $product['price'];
-                }
-            }
+                $total +=  $productsQty[$product['hash']]* $product['price'];
         }
 
         return $total;
+    }
+
+    /**
+     * Function that checks the product quantity
+     * @param $productHash
+     * @param $qty
+     * @return mixed
+     */
+    public function checkQuantity($productHash, $qty)
+    {
+        $product = $this->entityManager->getRepository(Product::class)->findOneBy(['hash' => $productHash]);
+
+        $data['maxQty'] = $product->getQty();
+        if ($product->getQty() >= $qty) {
+            $data['status'] = true;
+            return $data;
+        }
+
+        $data['status'] = false;
+        return $data;
     }
 }

@@ -29,11 +29,6 @@ class OrderProduct
      */
     private $order;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="orderProduct")
-     *  @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
-     */
-    private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="Product", inversedBy="orderProduct")

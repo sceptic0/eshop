@@ -30,7 +30,7 @@ class ProductRepository extends ServiceEntityRepository
     public function findWhereIn(array $ids)
     {
         return $this->createQueryBuilder('p')
-                ->andWhere('p.id IN(:val)')
+                ->andWhere('p.hash IN(:val)')
                 ->setParameter('val', $ids)
                 ->getQuery()
                 ->getResult();
@@ -41,7 +41,7 @@ class ProductRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p')
             ->select('p.id, p.image, p.price, p.title, p.hash')
-            ->andWhere('p.id IN(:val)')
+            ->andWhere('p.hash IN(:val)')
             ->setParameter('val', $ids)
             ->getQuery()
             ->getResult();

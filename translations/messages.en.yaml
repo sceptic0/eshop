@@ -23,3 +23,4 @@ products: Products
 browse: Browse
 price: Price
 created_at: Created at
+quantity_exceeded: Your selected quantity exceeds the available product quantity. We selected for you maximum quantity available at this moment

@@ -1,0 +1,30 @@
+{% extends 'layout_frontend.html.twig' %}
+
+{% block title %}Client Details{% endblock %}
+
+{% block content %}
+    {{ form_start(form) }}
+    <input type="hidden" value="{{ csrf_token('client.details') }}" name="csrf_token">
+    <div class="form-group">
+        <label for="address">{{ form_label(form.address) }}</label>
+        {{ form_widget(form.address) }}
+        {% if form_errors(form.address) %}
+            <div class="alert alert-warning">
+                {{ form_errors(form.address) }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        <label for="address">{{ form_label(form.phone) }}</label>
+        {{ form_widget(form.phone) }}
+        {% if form_errors(form.phone) %}
+            <div class="alert alert-warning">
+                {{ form_errors(form.phone) }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="form-group">
+        {{ form_widget(form.submit) }}
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

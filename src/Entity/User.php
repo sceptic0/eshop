@@ -19,7 +19,6 @@ class User implements UserInterface
         $this->setCreatedAt(new \DateTime('now'));
         $this->setUserHash(uniqid());
         $this->setAccountHash(uniqid());
-        $this->orderProduct = new ArrayCollection();
         $this->order = new ArrayCollection();
     }
 
@@ -91,12 +90,6 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=15, nullable=true)
      */
     private $phone;
-
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\OrderProduct", mappedBy="user")
-     */
-    private $orderProduct;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Order", mappedBy="user")

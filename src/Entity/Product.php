@@ -71,6 +71,23 @@ class Product
      */
     private $hash;
 
+    /**
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    private $qty;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Store", inversedBy="store")
+     * @ORM\JoinColumn(name="store_id", referencedColumnName="id", nullable=false)
+     */
+    private $store;
+
+
+    /**
+     * Product constructor.
+     */
+
+
     public function __construct()
     {
         $this->orderProduct = new ArrayCollection();
@@ -230,6 +247,30 @@ class Product
     public function setHash(string $hash): self
     {
         $this->hash = $hash;
+
+        return $this;
+    }
+
+    public function getQty(): ?int
+    {
+        return $this->qty;
+    }
+
+    public function setQty(int $qty): self
+    {
+        $this->qty = $qty;
+
+        return $this;
+    }
+
+    public function getStore(): ?Store
+    {
+        return $this->store;
+    }
+
+    public function setStore(?Store $store): self
+    {
+        $this->store = $store;
 
         return $this;
     }

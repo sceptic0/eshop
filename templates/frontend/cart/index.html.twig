@@ -43,7 +43,7 @@
                                    data-item="{{ cartProduct.hash }}">
                         </td>
                         <td>
-                        <span data-delete="{{ cartProduct.hash }}">
+                        <span class="delete-cart-product" data-delete="{{ cartProduct.hash }}">
                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash"
                                  fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
@@ -69,7 +69,9 @@
         <div class="row">
             <div class="col-md-8"></div>
             <div class="col-md-4">
-                {#                <a href="{{ path('order.store') }}">Next step</a>#}
+                {% if numberOfProducts %}
+                    <a href="{{ path('order.store') }}">Next step</a>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -89,8 +91,11 @@
                 formData.append('product', self.attr("data-item"));
                 formData.append('qty', self.val());
                 formData.append('token', token);
+                checkQty(formData, function(status) {
+                    if (!status)
+                        addToCart(formData);
+                });
 
-                addToCart(formData);
             });
 
             function addToCart(formData) {
@@ -117,38 +122,52 @@
                 })
             }
 
-            // let removeElement = $("[data-delete='" + product + "']");
-            // let orderItems = document.getElementById('order-items');
+            function checkQty(formData, callback) {
+                $.ajax({
+                    url: '/cart/checkQty',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (xhr, status) {
+                        let productInfo = $('.product-qty-info');
+                        productInfo.addClass('d-none');
+                        if (xhr.status === true) {
+                            callback(false)
+                        } else if (xhr.maxQty !== undefined) {
+                            productInfo.text(xhr.message);
+                            productInfo.removeClass('d-none');
+                            callback(true)
+                        }
+                    }
+                })
+            }
+            $('.delete-cart-product').on('click', function (e) {
+                let self = $(this);
+                let formData = new FormData();
+                formData.append('product', self.attr('data-delete'));
+                formData.append('token', token);
 
-            // removeElement.addEventListener('click', function (e) {
-            //     let formData = new FormData();
-            //     formData.append('product-id', product);
-            //     formData.append('token', token);
-            //
-            //     $.ajax({
-            //         url: '/cart/remove',
-            //         type: 'POST',
-            //         data: formData,
-            //         processData: false,
-            //         contentType: false,
-            //         success: function (xhr, status) {
-            //             // remove node from DOM
-            //             orderItems.removeChild(removeElement.parentNode.parentNode);
-            //             // set total price
-            //             total.text(xhr.total);
-            //             // get cart
-            //             let cart = $('#cart-no-items');
-            //             // get number of cart items
-            //             let noCartItems = $('#cart-no-items').text();
-            //             console.log(noCartItems, 'nocartitems')
-            //             // calculate number of items after removing from cart
-            //             let remainingCartItems = parseInt(noCartItems) - parseInt(xhr.removedItems);
-            //             console.log(xhr.removedItems, 'removeditems')
-            //             console.log(remainingCartItems, 'remaining')
-            //             cart.text(remainingCartItems);
-            //         }
-            //     })
-            // })
+                $.ajax({
+                    url: '/cart/remove',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (xhr, status) {
+                         self.closest('tr').remove();
+                        // set total price
+                        total.text(xhr.total);
+                        // get cart
+                        let cart = $('#cart-no-items');
+                        // get number of cart items
+                        let noCartItems = $('#cart-no-items').text();
+                        // calculate number of items after removing from cart
+                        let remainingCartItems = parseInt(noCartItems) - parseInt(xhr.removedItems);
+                        cart.text(remainingCartItems);
+                    }
+                })
+            })
 
         });
     </script>

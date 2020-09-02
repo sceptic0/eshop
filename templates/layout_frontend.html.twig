@@ -8,7 +8,7 @@
 
 {% block body %}
     {% set locale = app.request.locale %}
-    {% set numberOfProducts = app.session.get('cart')|length %}#}
+    {% set numberOfProducts = app.session.get('cart')|length %}
     <ul class="nav">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">

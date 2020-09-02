@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/cart", name="cart_")
@@ -41,9 +42,9 @@ class CartController extends AbstractController
             // TODO check token
             //$token = $request->request->get('token');
 
-            $product = $request->request->get('product');
+            $productAdded = filter_var($request->request->get('product'), FILTER_SANITIZE_STRING);
 
-            $product = $this->entityManager->getRepository(Product::class)->findOneBy(['hash' => $product]);
+            $product = $this->entityManager->getRepository(Product::class)->findOneBy(['hash' => $productAdded]);
 
             $this->cart->addToSession($product);
 
@@ -65,19 +66,78 @@ class CartController extends AbstractController
     public function productInCart(Request $request)
     {
         $cartProducts = $this->cart->getCart();
-        $ids = array_unique($cartProducts);
-        $values = array_count_values($cartProducts);
-        $products = $this->entityManager->getRepository(Product::class)->findWhereInArray($ids);
+        $hash = null;
+        if (!empty($cartProducts)) {
+            $hashes = array_unique($cartProducts);
+            $values = array_count_values($cartProducts);
+            $products = $this->entityManager->getRepository(Product::class)->findWhereInArray($hashes);
 
-        foreach ($products as $key => $product) {
-            $products[$key]['qty'] = $values[$product['id']];
+            foreach ($products as $key => $product) {
+                $products[$key]['qty'] = $values[$product['hash']];
+            }
+
+            $hash = array_column($products, 'hash');
         }
 
-        $hash = array_map(function($product){ return $product['hash'];}, $products);
         return $this->render('frontend/cart/index.html.twig', [
-            'totalCartItems' => count($cartProducts),
-            'cartProducts' => $products,
-            'ids' => json_encode($hash)
+            'totalCartItems' => ($cartProducts !== null ) ? count($cartProducts) : 0,
+            'cartProducts' => $products ?? [],
+            'ids' => ($hash !== null) ? json_encode($hash) : ''
         ]);
+    }
+
+
+    /**
+     * @Route("/remove", name="remove")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function removeFromCart(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $cartProducts = $this->cart->getCart();
+            $removedProduct = filter_var($request->request->get('product'), FILTER_SANITIZE_STRING);
+            $removedItems = 0;
+            foreach ($cartProducts as $key => $cartProduct) {
+                if ($cartProducts[$key] == $removedProduct) {
+                    $removedItems++;
+                    $this->cart->removeFromSession($cartProducts[$key]);
+                    unset($cartProducts[$key]);
+                }
+            }
+            $data['total'] = $this->cart->getCartTotal($cartProducts);
+            $data['removedItems'] = $removedItems;
+            return $this->json($data, 200);
+        }
+        return $this->json([], 403);
+    }
+
+    /**
+     * @Route("/checkQty", name="check.qty")
+     * @param Request $request
+     * @param TranslatorInterface $translator
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function checkQty(Request $request, TranslatorInterface $translator)
+    {
+        if ($request->isXmlHttpRequest()) {
+
+            $qty = filter_var($request->request->get('qty'), FILTER_SANITIZE_STRING);
+            $productHash = filter_var($request->request->get('product'), FILTER_SANITIZE_STRING);
+
+            $data['message'] = "";
+
+            $qtyCheck = $this->cart->checkQuantity($productHash, $qty);
+            if (!$qtyCheck['status']) {
+                $data['message'] = $translator->trans('quantity_exceeded');
+                $data['maxQty'] = $qtyCheck['maxQty'];
+                $data['status'] = $qtyCheck['status'];
+                return $this->json($data, 200);
+            }
+            $data['status'] = $qtyCheck['status'];
+            return $this->json($data, 200);
+        }
+
+        return $this->json([], 403);
     }
 }

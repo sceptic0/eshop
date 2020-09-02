@@ -23,3 +23,4 @@ products: Produse
 browse: Vezi produs
 price: Pret
 created_at: Creat la
+quantity_exceeded: Cantitatea pe care ai selectat-o a depasit stocul. Am selectat pentru dumneavoastra numarul maxim de produse pe stoc.
