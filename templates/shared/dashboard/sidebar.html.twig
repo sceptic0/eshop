@@ -12,6 +12,18 @@
                         <span class="kt-menu__link-text">Dashboard</span>
                     </a>
                 </li>
+                <li class="kt-menu__item {{ route == 'dashboard_index' ? 'kt-menu__item--active' : '' }}">
+                    <a href="{{ path('store_create') }}" class="kt-menu__link ">
+                        <i class="kt-menu__link-icon flaticon-home-2"></i>
+                        <span class="kt-menu__link-text">Store</span>
+                    </a>
+                </li>
+                <li class="kt-menu__item {{ route == 'dashboard_index' ? 'kt-menu__item--active' : '' }}">
+                    <a href="{{ path('admin_product_index') }}" class="kt-menu__link ">
+                        <i class="kt-menu__link-icon flaticon-home-2"></i>
+                        <span class="kt-menu__link-text">Products</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

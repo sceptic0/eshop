@@ -35,6 +35,7 @@ security:
                 target: app_login
     role_hierarchy:
         ROLE_CLIENT: ROLE_USER
+        ROLE_EDITOR: ROLE_USER
         ROLE_ADMIN: ROLE_USER
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -49,5 +50,6 @@ security:
         - { path: ^/dashboard/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: /dashboard/product/store, roles: [IS_ADMIN, IS_EDITOR]}
         - { path: ^/dashboard, roles: ROLE_ADMIN }
         - { path: ^/profile, roles: ROLE_CLIENT }

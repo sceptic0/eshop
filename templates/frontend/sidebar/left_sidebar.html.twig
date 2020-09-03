@@ -1,0 +1,26 @@
+<div class="col-md-3">
+    <form id="filter-form">
+        <div class="asd">
+            <span>Category</span>
+            <select name="category" id="category">
+                {% for category in categories %}
+                    <option>{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <h4>Attributes</h4>
+        {% set queryParams = app.request.get('attribute')|json_encode %}
+        {% for key,attribute in attributes %}
+            <span><strong>{{ key }}</strong></span>
+            <div class="asd">
+                {% for attr in attribute %}
+                     <input type="checkbox" class="attributes" value="{{ attr.id }}"
+                            {% if  attr.id in queryParams %}
+                                checked="checked"
+                            {% endif %}
+                            name="attribute[]">{{ attr.value }}<br/>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </form>
+</div>

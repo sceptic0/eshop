@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Helper;
-
 
 use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;

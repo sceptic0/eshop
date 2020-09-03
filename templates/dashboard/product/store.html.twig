@@ -1,0 +1,137 @@
+{% extends 'layout_dashboard.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h5>Create new product</h5>
+        {{ form_start(form) }}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('add-product') }}">
+        <div class="form-group">
+            <label>{{ form_label(form.title) }}</label>
+            {{ form_widget(form.title, {'attr': {'class': 'form_control'}}) }}
+            {% if form_errors(form.title) %}
+                <div class="alert alert-danger">
+                    {{ form_errors(form.title) }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label>{{ form_label(form.brand) }}</label>
+            {{ form_widget(form.brand, {'attr': {'class': 'form_control'}}) }}
+            {% if form_errors(form.brand) %}
+                <div class="alert alert-danger">
+                    {{ form_errors(form.brand) }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label>{{ form_label(form.ord) }}</label>
+            {{ form_widget(form.ord, {'attr': {'class': 'form_control'}}) }}
+            {% if form_errors(form.ord) %}
+                <div class="alert alert-danger">
+                    {{ form_errors(form.ord) }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label>{{ form_label(form.description) }}</label>
+            {{ form_widget(form.description, {'attr': {'class': 'form_control'}}) }}
+            {% if form_errors(form.description) %}
+                <div class="alert alert-danger">
+                    {{ form_errors(form.description) }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label>{{ form_label(form.price) }}</label>
+            {{ form_widget(form.price, {'attr': {'class': 'form_control'}}) }}
+            {% if form_errors(form.price) %}
+                <div class="alert alert-danger">
+                    {{ form_errors(form.price) }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label>{{ form_label(form.qty) }}</label>
+            {{ form_widget(form.qty, {'attr': {'class': 'form_control'}}) }}
+            {% if form_errors(form.qty) %}
+                <div class="alert alert-danger">
+                    {{ form_errors(form.qty) }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label>{{ form_label(form.category) }}</label>
+            {{ form_widget(form.category, {'attr': {'class': 'form_control'}}) }}
+            {% if form_errors(form.category) %}
+                <div class="alert alert-danger">
+                    {{ form_errors(form.category) }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label>{{ form_label(form.attribute) }}</label>
+            {{ form_widget(form.attribute, {'attr': {'class': 'form_control', 'id': 'attribute'}}) }}
+            {% if form_errors(form.attribute) %}
+                <div class="alert alert-danger">
+                    {{ form_errors(form.attribute) }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            Attribute value
+            <select id="attribute_value" class="form-control d-none" name="attribute_value"></select>
+        </div>
+        <div class="form-group">
+            <label>{{ form_label(form.store) }}</label>
+            {{ form_widget(form.store) }}
+            {% if form_errors(form.store) %}
+                <div class="alert alert-danger">
+                    {{ form_errors(form.store) }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label>{{ form_label(form.image) }}</label>
+            {{ form_widget(form.image, {'attr': {'class': 'form_control'}}) }}
+            {% if form_errors(form.image) %}
+                <div class="alert alert-danger">
+                    {{ form_errors(form.image) }}
+                </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form_widget(form.submit) }}
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block page_javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('#create_product_attribute').change(function(e) {
+                let attribute = $(this).val();
+                $.ajax({
+                    url:'/dashboard/attributes-values?attribute=' + attribute,
+                    type:'GET',
+                    success: function (xhr, status) {
+                        $('#attribute_value').empty();
+                        if (xhr.length > 0) {
+                            $.each(xhr, function (i, item) {
+                                console.log(item, 'item')
+                                $('#attribute_value').append($('<option>', {
+                                    value: item.id,
+                                    text: item.value
+                                }));
+                            })
+                        }
+                        $('#attribute_value').removeClass('d-none');
+                    }
+                })
+            })
+        });
+    </script>
+{% endblock %}

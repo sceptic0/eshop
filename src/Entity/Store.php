@@ -18,6 +18,7 @@ class Store
         $this->setHash(uniqid());
         $this->user = new ArrayCollection();
         $this->store = new ArrayCollection();
+        $this->category = new ArrayCollection();
     }
 
     /**
@@ -52,6 +53,11 @@ class Store
      * @ORM\OneToMany(targetEntity="Product", mappedBy="store")
      */
     private $store;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="store")
+     */
+    private $category;
 
 
     public function getId(): ?int
@@ -155,6 +161,37 @@ class Store
             // set the owning side to null (unless already changed)
             if ($store->getStore() === $this) {
                 $store->setStore(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Store[]
+     */
+    public function getCategory(): Collection
+    {
+        return $this->category;
+    }
+
+    public function addCategory(Store $category): self
+    {
+        if (!$this->category->contains($category)) {
+            $this->category[] = $category;
+            $category->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Store $category): self
+    {
+        if ($this->category->contains($category)) {
+            $this->category->removeElement($category);
+            // set the owning side to null (unless already changed)
+            if ($category->getCategory() === $this) {
+                $category->setCategory(null);
             }
         }
 

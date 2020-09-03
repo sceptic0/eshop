@@ -46,4 +46,24 @@ class ProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function filter($category, $attribute)
+    {
+        $query = $this->createQueryBuilder('p')
+                ->join('p.attributeProduct', 'ap', 'WITH','ap.product = p.id');
+            if ($attribute && is_array($attribute)) {
+                foreach ($attribute as $type => $value) {
+                    $query = $query->andWhere('ap.attributeOption IN (:val1)')
+                        ->setParameter('val1', $attribute);
+                }
+            }
+
+            if ($category) {
+                $query = $query->andWhere('p.category = :val')
+                    ->setParameter('val', $category);
+            }
+
+        return $query->getQuery()
+                ->getResult();
+    }
 }

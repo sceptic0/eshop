@@ -82,16 +82,35 @@ class Product
      */
     private $store;
 
-
+    /**
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="product")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     */
+    private $category;
     /**
      * Product constructor.
      */
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $brand;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $description;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AttributeProduct", mappedBy="product")
+     */
+    private $attributeProduct;
 
     public function __construct()
     {
-        $this->orderProduct = new ArrayCollection();
         $this->setHash(uniqid());
+        $this->orderProduct = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -274,4 +293,41 @@ class Product
 
         return $this;
     }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getBrand(): ?string
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(string $brand): self
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
 }
